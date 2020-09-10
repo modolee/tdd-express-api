@@ -1,0 +1,26 @@
+{
+  "name": "tdd-express-api",
+  "version": "0.0.1",
+  "main": "src/app.js",
+  "repository": "https://github.com/modolee/tdd-express-api.git",
+  "author": "이성일 <modolee.si@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/app.js",
+    "test": "jest --verbose",
+    "test:watch": "jest --verbose --watch"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
+}
