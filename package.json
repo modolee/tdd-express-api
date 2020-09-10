@@ -11,13 +11,15 @@
     "test:watch": "jest --verbose --watch"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.10.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
+    "@shelf/jest-mongodb": "^1.2.3",
     "babel-jest": "^26.3.0",
     "jest": "^26.4.2",
     "nodemon": "^2.0.4",
