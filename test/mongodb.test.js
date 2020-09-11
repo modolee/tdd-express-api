@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 describe('MongoDB', () => {
-  let db;
 
   beforeAll(async () => {
-    db = await mongoose.connect(
+    await mongoose.connect(
       `${process.env.MONGO_URL}`,
       {
         dbName: 'test',
@@ -18,10 +17,10 @@ describe('MongoDB', () => {
   });
 
   test('MongoDB save test', async () => {
-    const Cat = mongoose.model('Cat', { name: String });
-    const kitty = new Cat({ name: 'Zildjian' });
-    await kitty.save();
-    const result = await Cat.findOne({name: 'Zildjian'});
-    expect(result.name).toBe('Zildjian');
+    const User = mongoose.model('user', { name: String });
+    const admin = new User({ name: 'modolee' });
+    await admin.save();
+    const result = await User.findOne({name: 'modolee'});
+    expect(result.name).toBe('modolee');
   });
 });
