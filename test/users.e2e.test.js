@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../src/app';
 import * as db from '../src/db';
 
-describe('User API Test', () => {
+describe('사용자 API 테스트', () => {
   // 전체 테스트 시작 전
   beforeAll(async () => {
     await db.connect(
@@ -16,7 +16,7 @@ describe('User API Test', () => {
     await db.disconnect();
   });
 
-  describe('CREATE User', () => {
+  describe('사용자 생성', () => {
     test('정상적인 인자를 넘겨 받지 못한 경우 - 인자가 없는 경우', async () => {
       // GIVEN
       const userInfo = {
@@ -33,7 +33,7 @@ describe('User API Test', () => {
           .send(userInfo)
 
       // THEN
-      const errorInfo = {
+      const expectedData = {
         errors: [
           {
             location: 'body',
@@ -42,8 +42,8 @@ describe('User API Test', () => {
           }
         ]
       };
-      expect(result.status).toBe(400)
-      expect(result.body).toEqual(errorInfo);
+      expect(result.status).toBe(400);
+      expect(result.body).toEqual(expectedData);
     });
 
     test('정상적인 인자를 넘겨 받지 못한 경우 - 인자의 타입이 잘못 된 경우', async () => {
@@ -62,7 +62,7 @@ describe('User API Test', () => {
           .send(userInfo)
 
       // THEN
-      const errorInfo = {
+      const expectedData = {
         errors: [
           {
             location: 'body',
@@ -84,26 +84,45 @@ describe('User API Test', () => {
           }
         ]
       };
-      expect(result.status).toBe(400)
-      expect(result.body).toEqual(errorInfo);
+      expect(result.status).toBe(400);
+      expect(result.body).toEqual(expectedData);
+    });
+
+    test('정상적인 인자를 넘겨 받은 경우 - 새로운 사용자인 경우', async () => {
+      // GIVEN
+      const userInfo = {
+        name: '모도리',
+        position: '개발자',
+        roles: ['ADMIN']
+      };
+
+      // WHEN
+      const result =
+        await request(app)
+          .post('/users')
+          .type('application/json')
+          .send(userInfo)
+
+      // THEN
+      expect(result.status).toBe(201);
+      expect(result.body).toMatchObject({ data: userInfo });
     });
 
     // TODO: 정상적인 인자를 넘겨 받은 경우
-      // TODO: 새로운 사용자인 경우
       // TODO: 사용자가 이미 존재하는 경우
   });
 
-  describe('READ User', () => {
+  describe('사용자 조회', () => {
     // TODO: 없는 사용자를 조회하는 경우
     // TODO: 있는 사용자를 조회하는 경우
   });
 
-  describe('UPDATE User', () => {
+  describe('사용자 갱신', () => {
     // TODO: 없는 사용자를 업데이트하려는 경우
     // TODO: 있는 사용자를 업데이트하려는 경우
   });
 
-  describe('DELETE User', () => {
+  describe('사용자 삭제', () => {
     // TODO: 없는 사용자를 삭제하려는 경우
     // TODO: 있는 사용자를 삭제하려는 경우
   });

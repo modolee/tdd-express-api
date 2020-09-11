@@ -1,5 +1,5 @@
 import express from 'express';
-import userRouter from './user.router';
+import usersRouter from './users/users.router';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -9,6 +9,6 @@ app.get('/', (req, res) => {
   res.status(200).json('Hello World!');
 });
 
-app.use('/users', userRouter);
+app.use('/users', usersRouter);
 
 export default app;
