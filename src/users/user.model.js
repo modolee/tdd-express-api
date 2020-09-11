@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const UserSchema = {
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   position: { type: String, required: true },
   roles: { type: [String], required: true }
 };

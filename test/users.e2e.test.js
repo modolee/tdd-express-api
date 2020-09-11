@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../src/app';
 import * as db from '../src/db';
+import userModel from '../src/users/user.model';
 
 describe('사용자 API 테스트', () => {
   // 전체 테스트 시작 전
@@ -14,6 +15,11 @@ describe('사용자 API 테스트', () => {
   // 전체 테스트 종료 후
   afterAll(async () => {
     await db.disconnect();
+  });
+
+  // 각 테스트 시작 전
+  beforeEach(async () => {
+    await userModel.deleteMany({});
   });
 
   describe('사용자 생성', () => {
@@ -88,7 +94,36 @@ describe('사용자 API 테스트', () => {
       expect(result.body).toEqual(expectedData);
     });
 
-    test('정상적인 인자를 넘겨 받은 경우 - 새로운 사용자인 경우', async () => {
+    test('정상적인 인자를 넘겨 받은 경우 - 존재하는 사용자', async () => {
+      // GIVEN
+      const userInfo = {
+        name: '모도리',
+        position: '개발자',
+        roles: ['ADMIN']
+      };
+
+      // WHEN
+      const firstResult =
+        await request(app)
+          .post('/users')
+          .type('application/json')
+          .send(userInfo)
+
+      const secondResult =
+        await request(app)
+          .post('/users')
+          .type('application/json')
+          .send(userInfo)
+
+      // THEN
+      expect(firstResult.status).toBe(201);
+      expect(firstResult.body).toMatchObject({ data: userInfo });
+
+      expect(secondResult.status).toBe(403);
+      expect(secondResult.body).toMatchObject({ error: `User '모도리' already exists` });
+    });
+
+    test('정상적인 인자를 넘겨 받은 경우 - 새로운 사용자', async () => {
       // GIVEN
       const userInfo = {
         name: '모도리',
@@ -107,9 +142,6 @@ describe('사용자 API 테스트', () => {
       expect(result.status).toBe(201);
       expect(result.body).toMatchObject({ data: userInfo });
     });
-
-    // TODO: 정상적인 인자를 넘겨 받은 경우
-      // TODO: 사용자가 이미 존재하는 경우
   });
 
   describe('사용자 조회', () => {

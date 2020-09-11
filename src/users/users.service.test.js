@@ -1,7 +1,16 @@
 import * as db from '../db';
 import * as UsersService from './users.service';
+import userModel from './user.model';
 
 describe('User Service Test', () => {
+
+  // GIVEN
+  const userInfo = {
+    name: '모도리',
+    position: '개발자',
+    roles: ['ADMIN']
+  };
+
   // 전체 테스트 시작 전
   beforeAll(async () => {
     await db.connect(
@@ -15,14 +24,30 @@ describe('User Service Test', () => {
     await db.disconnect();
   });
 
+  // 각 테스트 시작 전
+  beforeEach(async () => {
+    await userModel.deleteMany({});
+  });
+
   describe('사용자 생성', () => {
+    test('존재하는 사용자', async () => {
+      // GIVEN
+
+      let firstResult, secondResult;
+      try {
+      // WHEN
+        firstResult = await UsersService.createUser(userInfo);
+        secondResult = await UsersService.createUser(userInfo);
+      } catch(err) {
+        // THEN
+        expect(firstResult).toMatchObject(userInfo);
+        expect(err).toMatchObject(new Error(`User '모도리' already exists`));
+      } finally {
+        expect(secondResult).toBeUndefined();
+      }
+    });
     test('새로운 사용자', async () => {
       // GIVEN
-      const userInfo = {
-        name: '모도리',
-        position: '개발자',
-        roles: ['ADMIN']
-      };
 
       // WHEN
       const result = await UsersService.createUser(userInfo);
@@ -30,8 +55,6 @@ describe('User Service Test', () => {
       // THEN
       expect(result).toMatchObject(userInfo);
     });
-
-    // TODO: 사용자 생성 - 존재하는 사용자
   });
 
   describe('사용자 조회', () => {
