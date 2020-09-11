@@ -1,12 +1,12 @@
 {
   "name": "tdd-express-api",
   "version": "0.0.1",
-  "main": "src/app.js",
+  "main": "src/index.js",
   "repository": "https://github.com/modolee/tdd-express-api.git",
   "author": "이성일 <modolee.si@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/app.js",
+    "dev": "nodemon --exec babel-node src/index.js",
     "test": "jest --verbose",
     "test:watch": "jest --verbose --watch"
   },
