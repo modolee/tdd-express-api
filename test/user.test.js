@@ -17,28 +17,36 @@ describe('User API Test', () => {
   });
 
   describe('CREATE User', () => {
-    test('정상적인 인자를 넘겨 받지 못한 경우', () => {
+    test('정상적인 인자를 넘겨 받지 못한 경우', async () => {
+      // GIVEN
       const userInfo = {
         name: '모도리',
         position: '개발자'
       };
 
-      const errorInfo = {
-        message: `Field 'role' is required`
-      };
-
+      // WHEN
       const result =
-        request(app)
+        await request(app)
           .post('/users')
           .type('application/json')
           .send(userInfo)
 
+      // THEN
+      const errorInfo = {
+        errors: [
+          {
+            location: 'body',
+            msg: 'Invalid value',
+            param: 'roles'
+          }
+        ]
+      };
       expect(result.status).toBe(400)
       expect(result.body).toEqual(errorInfo);
     });
     // TODO: 정상적인 인자를 넘겨 받은 경우
-      // TODO: 사용자가 이미 존재하는 경우
       // TODO: 새로운 사용자인 경우
+      // TODO: 사용자가 이미 존재하는 경우
   });
 
   describe('READ User', () => {
